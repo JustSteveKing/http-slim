@@ -18,8 +18,8 @@
 
 [source]: https://github.com/JustSteveKing/http-slim
 [packagist]: https://packagist.org/packages/juststeveking/http-slim
-[license]: https://github.com/juststeveking/http-slim/blob/master/LICENSE
+[license]: https://github.com/JustSteveKing/http-slim/blob/master/LICENSE
 [php]: https://php.net
-[coverage]: https://coveralls.io/r/juststeveking/http-slim?branch=master
+[coverage]: https://coveralls.io/r/JustSteveKing/http-slim?branch=master
 [downloads]: https://packagist.org/packages/juststeveking/http-slim
 <!-- BADGES_END -->
