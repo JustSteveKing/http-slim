@@ -61,10 +61,6 @@ declare(strict_types=1);
 use JustSteveKing\HttpSlim\HttpClient;
 use Symfony\Component\HttpClient\Psr18Client;
 
-$client = new Psr18Client();
-$requestFactory = new Psr18Client();
-$streamFactory = new Psr18Client();
-
 $httpClient = HttpClient::build(
     new Psr18Client(), // our client
     new Psr18Client(), // our request factory
