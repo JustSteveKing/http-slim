@@ -6,8 +6,17 @@ build:
       project_setup:
         override: true
       tests:
-        override: [php-scrutinizer-run]
-
+        override:
+          - php-scrutinizer-run
+          -
+            command: phpcs-run
+            use_website_config: true
+          -
+            command: vendor/bin/phpunit --coverage-colver=clover.xml
+            coverage:
+              file: clover.xml
+              format: php-clover
+    tests: true
 
 filter:
   excluded_paths: [tests/*]
