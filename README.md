@@ -5,7 +5,7 @@
 [![Latest Version][badge-release]][packagist]
 [![Software License][badge-license]][license]
 [![PHP Version][badge-php]][php]
-[![Coverage Status][badge-coverage]][coverage]
+![run-tests](https://github.com/JustSteveKing/http-slim/workflows/run-tests/badge.svg)
 [![Total Downloads][badge-downloads]][downloads]
 
 [badge-source]: http://img.shields.io/badge/source-JustSteveKing/http-slim-blue.svg?style=flat-square
@@ -13,13 +13,11 @@
 [badge-license]: https://img.shields.io/packagist/l/juststeveking/http-slim.svg?style=flat-square
 [badge-php]: https://img.shields.io/packagist/php-v/juststeveking/http-slim.svg?style=flat-square
 
-[badge-coverage]: https://img.shields.io/coveralls/github/juststeveking/http-slim/master.svg?style=flat-square
 [badge-downloads]: https://img.shields.io/packagist/dt/juststeveking/http-slim.svg?style=flat-square&colorB=mediumvioletred
 
 [source]: https://github.com/JustSteveKing/http-slim
 [packagist]: https://packagist.org/packages/juststeveking/http-slim
 [license]: https://github.com/JustSteveKing/http-slim/blob/master/LICENSE.md
 [php]: https://php.net
-[coverage]: https://coveralls.io/r/JustSteveKing/http-slim?branch=master
 [downloads]: https://packagist.org/packages/juststeveking/http-slim
 <!-- BADGES_END -->
