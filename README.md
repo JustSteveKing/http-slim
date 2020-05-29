@@ -5,6 +5,7 @@
 [![Software License][badge-license]][license]
 [![PHP Version][badge-php]][php]
 ![run-tests](https://github.com/JustSteveKing/http-slim/workflows/run-tests/badge.svg)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/JustSteveKing/http-slim/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/JustSteveKing/http-slim/?branch=master)
 [![Total Downloads][badge-downloads]][downloads]
 
 [badge-release]: https://img.shields.io/packagist/v/juststeveking/http-slim.svg?style=flat-square&label=release
