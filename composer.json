@@ -1,6 +1,6 @@
 {
     "name": "juststeveking/http-slim",
-    "description": "A slim psr compliant http client",
+    "description": "A slim psr compliant http client to provide better interoperability",
     "type": "library",
     "authors": [
         {
@@ -12,7 +12,8 @@
     "keywords": [
         "http-client",
         "psr-7",
-        "psr-18"
+        "psr-18",
+        "psr-17"
     ],
     "license": "MIT",
     "require": {

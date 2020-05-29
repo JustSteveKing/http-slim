@@ -25,6 +25,7 @@ The purpose of this package is to create an interoperable http client implementa
 THe main goal of this package is to adhere to the following PSRs:
 
 - PSR-18
+- PSR-17
 - PSR-7
 
 
