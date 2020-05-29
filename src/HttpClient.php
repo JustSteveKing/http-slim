@@ -4,20 +4,15 @@ declare(strict_types=1);
 
 namespace JustSteveKing\HttpSlim;
 
-use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Client\ClientExceptionInterface;
 use JustSteveKing\HttpSlim\Exceptions\RequestError;
 
 class HttpClient implements HttpClientInterface
 {
-    /**
-     * @var string
-     */
-    protected string $writeKey;
-
     /**
      * @var ClientInterface
      */
@@ -35,30 +30,45 @@ class HttpClient implements HttpClientInterface
 
     /**
      * HttpClient constructor.
-     * @param string $writeKey
      * @param ClientInterface $client
      * @param RequestFactoryInterface $requestFactory
      * @param StreamFactoryInterface $streamFactory
      */
-    public function __construct(
-        string $writeKey,
+    final protected function __construct(
         ClientInterface $client,
         RequestFactoryInterface $requestFactory,
         StreamFactoryInterface $streamFactory
     ) {
         $this->client = $client;
-        $this->writeKey = $writeKey;
         $this->requestFactory = $requestFactory;
         $this->streamFactory = $streamFactory;
     }
 
     /**
+     * @param ClientInterface $client
+     * @param RequestFactoryInterface $requestFactory
+     * @param StreamFactoryInterface $streamFactory
+     * @return static
+     */
+    public static function build(
+        ClientInterface $client,
+        RequestFactoryInterface $requestFactory,
+        StreamFactoryInterface $streamFactory
+    ): self {
+        return new static(
+            $client,
+            $requestFactory,
+            $streamFactory
+        );
+    }
+
+    /**
      * @param string $uri
-     * @param \JsonSerializable $body
+     * @param array $body
      * @return ResponseInterface
      * @throws ClientExceptionInterface
      */
-    public function post(string $uri, \JsonSerializable $body): ResponseInterface
+    public function post(string $uri, array $body): ResponseInterface
     {
         try {
             $content = $this->encodeJson($body);
@@ -77,11 +87,11 @@ class HttpClient implements HttpClientInterface
 
     /**
      * @param string $uri
-     * @param \JsonSerializable $body
+     * @param array $body
      * @return ResponseInterface
      * @throws ClientExceptionInterface
      */
-    public function put(string $uri, \JsonSerializable $body): ResponseInterface
+    public function put(string $uri, array $body): ResponseInterface
     {
         try {
             $content = $this->encodeJson($body);
@@ -100,11 +110,11 @@ class HttpClient implements HttpClientInterface
 
     /**
      * @param string $uri
-     * @param \JsonSerializable $body
+     * @param array $body
      * @return ResponseInterface
      * @throws ClientExceptionInterface
      */
-    public function patch(string $uri, \JsonSerializable $body): ResponseInterface
+    public function patch(string $uri, array $body): ResponseInterface
     {
         try {
             $content = $this->encodeJson($body);
@@ -148,11 +158,11 @@ class HttpClient implements HttpClientInterface
     }
 
     /**
-     * @param \JsonSerializable $json
+     * @param array $json
      * @return string
      * @throws \JsonException
      */
-    protected function encodeJson(\JsonSerializable $json): string
+    protected function encodeJson(array $json): string
     {
         return json_encode($json, JSON_THROW_ON_ERROR);
     }

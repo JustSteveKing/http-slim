@@ -30,27 +30,20 @@ class HttpClientTest extends TestCase
     private ObjectProphecy $client;
 
     /**
-     * @var JsonSerializable
+     * @var array
      */
-    private JsonSerializable $body;
+    private array $body;
 
     protected function setUp(): void
     {
         $this->client = $this->prophesize(ClientInterface::class);
 
-        $this->body = new class () implements JsonSerializable {
-            public array $body = [];
-
-            public function jsonSerialize()
-            {
-                return $this->body;
-            }
-        };
+        $this->body = [];
     }
 
     public function testThatWeCanSendAPostRequest()
     {
-        $this->body->body = [
+        $this->body = [
             'foo' => 'bar'
         ];
 
@@ -60,7 +53,7 @@ class HttpClientTest extends TestCase
             ->shouldBeCalled()
             ->willReturn(new Response());
 
-        $httpClient = new HttpClient('foobar', $this->client->reveal(), $psr18Client, $psr18Client);
+        $httpClient = HttpClient::build($this->client->reveal(), $psr18Client, $psr18Client);
 
         $httpClient->post($this->url, $this->body);
     }
@@ -99,14 +92,14 @@ class HttpClientTest extends TestCase
             ->shouldBeCalled()
             ->willReturn(new Response());
 
-        $httpClient = new HttpClient('foobar', $this->client->reveal(), $psr18Client, $psr18Client);
+        $httpClient = HttpClient::build($this->client->reveal(), $psr18Client, $psr18Client);
 
         $httpClient->delete($this->url);
     }
 
     public function testThatWeCanSendAPutRequest()
     {
-        $this->body->body = [
+        $this->body = [
             'foo' => 'bar'
         ];
 
@@ -116,14 +109,14 @@ class HttpClientTest extends TestCase
             ->shouldBeCalled()
             ->willReturn(new Response());
 
-        $httpClient = new HttpClient('foobar', $this->client->reveal(), $psr18Client, $psr18Client);
+        $httpClient = HttpClient::build($this->client->reveal(), $psr18Client, $psr18Client);
 
         $httpClient->put($this->url, $this->body);
     }
 
     public function testThatWeCanSendAPatchRequest()
     {
-        $this->body->body = [
+        $this->body = [
             'foo' => 'bar'
         ];
 
@@ -133,7 +126,7 @@ class HttpClientTest extends TestCase
             ->shouldBeCalled()
             ->willReturn(new Response());
 
-        $httpClient = new HttpClient('foobar', $this->client->reveal(), $psr18Client, $psr18Client);
+        $httpClient = HttpClient::build($this->client->reveal(), $psr18Client, $psr18Client);
 
         $httpClient->patch($this->url, $this->body);
     }
@@ -168,8 +161,7 @@ class HttpClientTest extends TestCase
     {
         $psr18Client = $requestFactory = $streamFactory = new Psr18Client();
 
-        return new HttpClient(
-            'foobar',
+        return HttpClient::build(
             $psr18Client,
             $requestFactory,
             $streamFactory

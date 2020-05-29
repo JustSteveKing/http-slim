@@ -52,14 +52,10 @@
         ],
         "preflight:analyse:phpstan": "phpstan analyse -c phpstan.neon.dist --no-progress",
         "preflight:analyze:psalm": "psalm --diff --diff-methods --show-info=true --config=psalm.xml.dist",
-        "preflight:repl": [
-            "echo ; echo 'Type ./bin/repl to start the REPL.'"
-        ],
         "preflight:lint": [
             "parallel-lint src tests",
             "phpcs --cache=build/cache/phpcs.cache"
         ],
-        "preflight:lint:fix": "./bin/lint-fix.sh",
         "preflight:test": "phpunit",
         "preflight:test:all": [
             "@preflight:lint",
@@ -74,8 +70,6 @@
         "preflight:analyze:phpstan": "Runs the PHPStan static analyzer.",
         "preflight:analyze:psalm": "Runs the Psalm static analyzer.",
         "preflight:lint": "Checks all source code for coding standards issues.",
-        "preflight:lint:fix": "Checks source code for coding standards issues and fixes them, if possible.",
-        "preflight:repl": "Note: Use ./bin/repl to run the REPL.",
         "preflight:test": "Runs the full unit test suite.",
         "preflight:test:all": "Runs linting, static analysis, and unit tests.",
         "preflight:test:coverage:ci": "Runs the unit test suite and generates a Clover coverage report.",
