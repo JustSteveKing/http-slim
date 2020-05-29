@@ -47,6 +47,7 @@ A few packages that are recommended:
 
 - [Guzzle](http://docs.guzzlephp.org/en/stable/)
 - [Symfony HttpClient](https://symfony.com/doc/current/components/http_client.html)
+- [A great PSR implementation with factories to adhere to PSR-18 fully](https://github.com/Nyholm/psr7)
 
 
 ## Usage
