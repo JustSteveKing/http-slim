@@ -55,7 +55,7 @@ class HttpClient implements HttpClientInterface
         RequestFactoryInterface $requestFactory,
         StreamFactoryInterface $streamFactory
     ): self {
-        return new static(
+        return new self(
             $client,
             $requestFactory,
             $streamFactory
