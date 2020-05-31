@@ -80,10 +80,9 @@ class HttpClient implements HttpClientInterface
         // @codeCoverageIgnoreEnd
 
         $request = $this->requestFactory->createRequest('POST', $uri)
-            ->withAddedHeader('Content-Type', 'application/json')
             ->withBody($this->streamFactory->createStream($content));
 
-        foreach ($headers as $name => $value) {
+        foreach (array_merge(['Content-Type' => 'application/json'], $headers) as $name => $value) {
             $request = $request->withHeader($name, $value);
         }
 
@@ -108,10 +107,9 @@ class HttpClient implements HttpClientInterface
         // @codeCoverageIgnoreEnd
 
         $request = $this->requestFactory->createRequest('PUT', $uri)
-            ->withAddedHeader('Content-Type', 'application/json')
             ->withBody($this->streamFactory->createStream($content));
 
-        foreach ($headers as $name => $value) {
+        foreach (array_merge(['Content-Type' => 'application/json'], $headers) as $name => $value) {
             $request = $request->withHeader($name, $value);
         }
 
@@ -136,10 +134,9 @@ class HttpClient implements HttpClientInterface
         // @codeCoverageIgnoreEnd
 
         $request = $this->requestFactory->createRequest('PATCH', $uri)
-            ->withAddedHeader('Content-Type', 'application/json')
             ->withBody($this->streamFactory->createStream($content));
 
-        foreach ($headers as $name => $value) {
+        foreach (array_merge(['Content-Type' => 'application/json'], $headers) as $name => $value) {
             $request = $request->withHeader($name, $value);
         }
 
