@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace JustSteveKing\HttpSlim;
 
 use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\RequestFactoryInterface;
@@ -38,7 +39,8 @@ class HttpClient implements HttpClientInterface
         ClientInterface $client,
         RequestFactoryInterface $requestFactory,
         StreamFactoryInterface $streamFactory
-    ) {
+    )
+    {
         $this->client = $client;
         $this->requestFactory = $requestFactory;
         $this->streamFactory = $streamFactory;
@@ -64,6 +66,23 @@ class HttpClient implements HttpClientInterface
 
     /**
      * @param string $uri
+     * @param array $headers
+     * @return ResponseInterface
+     * @throws ClientExceptionInterface
+     */
+    public function get(string $uri, array $headers = []): ResponseInterface
+    {
+        $request = $this->createRequest('GET', $uri);
+
+        foreach ($headers as $name => $value) {
+            $request = $request->withHeader($name, $value);
+        }
+
+        return $this->client->sendRequest($request);
+    }
+
+    /**
+     * @param string $uri
      * @param array $body
      * @param array $headers
      * @return ResponseInterface
@@ -79,7 +98,7 @@ class HttpClient implements HttpClientInterface
         }
         // @codeCoverageIgnoreEnd
 
-        $request = $this->requestFactory->createRequest('POST', $uri)
+        $request = $this->createRequest('POST', $uri)
             ->withBody($this->streamFactory->createStream($content));
 
         foreach (array_merge(['Content-Type' => 'application/json'], $headers) as $name => $value) {
@@ -106,7 +125,7 @@ class HttpClient implements HttpClientInterface
         }
         // @codeCoverageIgnoreEnd
 
-        $request = $this->requestFactory->createRequest('PUT', $uri)
+        $request = $this->createRequest('PUT', $uri)
             ->withBody($this->streamFactory->createStream($content));
 
         foreach (array_merge(['Content-Type' => 'application/json'], $headers) as $name => $value) {
@@ -133,7 +152,7 @@ class HttpClient implements HttpClientInterface
         }
         // @codeCoverageIgnoreEnd
 
-        $request = $this->requestFactory->createRequest('PATCH', $uri)
+        $request = $this->createRequest('PATCH', $uri)
             ->withBody($this->streamFactory->createStream($content));
 
         foreach (array_merge(['Content-Type' => 'application/json'], $headers) as $name => $value) {
@@ -149,26 +168,9 @@ class HttpClient implements HttpClientInterface
      * @return ResponseInterface
      * @throws ClientExceptionInterface
      */
-    public function get(string $uri, array $headers = []): ResponseInterface
-    {
-        $request = $this->requestFactory->createRequest('GET', $uri);
-
-        foreach ($headers as $name => $value) {
-            $request = $request->withHeader($name, $value);
-        }
-
-        return $this->client->sendRequest($request);
-    }
-
-    /**
-     * @param string $uri
-     * @param array $headers
-     * @return ResponseInterface
-     * @throws ClientExceptionInterface
-     */
     public function delete(string $uri, array $headers = []): ResponseInterface
     {
-        $request = $this->requestFactory->createRequest('DELETE', $uri);
+        $request = $this->createRequest('DELETE', $uri);
 
         foreach ($headers as $name => $value) {
             $request = $request->withHeader($name, $value);
@@ -185,5 +187,20 @@ class HttpClient implements HttpClientInterface
     protected function encodeJson(array $json): string
     {
         return json_encode($json, JSON_THROW_ON_ERROR);
+    }
+
+    /**
+     * Create a new Request to send
+     *
+     * @param string $method
+     * @param $uri
+     * @return RequestInterface
+     */
+    protected function createRequest(string $method, $uri): RequestInterface
+    {
+        return $this->requestFactory->createRequest(
+            $method,
+            $uri
+        );
     }
 }
