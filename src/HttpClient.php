@@ -65,10 +65,11 @@ class HttpClient implements HttpClientInterface
     /**
      * @param string $uri
      * @param array $body
+     * @param array $headers
      * @return ResponseInterface
      * @throws ClientExceptionInterface
      */
-    public function post(string $uri, array $body): ResponseInterface
+    public function post(string $uri, array $body, array $headers = []): ResponseInterface
     {
         try {
             $content = $this->encodeJson($body);
@@ -82,16 +83,21 @@ class HttpClient implements HttpClientInterface
             ->withAddedHeader('Content-Type', 'application/json')
             ->withBody($this->streamFactory->createStream($content));
 
+        foreach ($headers as $name => $value) {
+            $request = $request->withHeader($name, $value);
+        }
+
         return $this->client->sendRequest($request);
     }
 
     /**
      * @param string $uri
      * @param array $body
+     * @param array $headers
      * @return ResponseInterface
      * @throws ClientExceptionInterface
      */
-    public function put(string $uri, array $body): ResponseInterface
+    public function put(string $uri, array $body, array $headers = []): ResponseInterface
     {
         try {
             $content = $this->encodeJson($body);
@@ -105,16 +111,21 @@ class HttpClient implements HttpClientInterface
             ->withAddedHeader('Content-Type', 'application/json')
             ->withBody($this->streamFactory->createStream($content));
 
+        foreach ($headers as $name => $value) {
+            $request = $request->withHeader($name, $value);
+        }
+
         return $this->client->sendRequest($request);
     }
 
     /**
      * @param string $uri
      * @param array $body
+     * @param array $headers
      * @return ResponseInterface
      * @throws ClientExceptionInterface
      */
-    public function patch(string $uri, array $body): ResponseInterface
+    public function patch(string $uri, array $body, array $headers = []): ResponseInterface
     {
         try {
             $content = $this->encodeJson($body);
@@ -128,31 +139,43 @@ class HttpClient implements HttpClientInterface
             ->withAddedHeader('Content-Type', 'application/json')
             ->withBody($this->streamFactory->createStream($content));
 
-        return $this->client->sendRequest($request);
-    }
-
-    /**
-     * @param string $uri
-     * @return ResponseInterface
-     * @throws ClientExceptionInterface
-     */
-    public function get(string $uri): ResponseInterface
-    {
-        $request = $this->requestFactory->createRequest('GET', $uri)
-            ->withAddedHeader('Content-Type', 'application/json');
+        foreach ($headers as $name => $value) {
+            $request = $request->withHeader($name, $value);
+        }
 
         return $this->client->sendRequest($request);
     }
 
     /**
      * @param string $uri
+     * @param array $headers
      * @return ResponseInterface
      * @throws ClientExceptionInterface
      */
-    public function delete(string $uri): ResponseInterface
+    public function get(string $uri, array $headers = []): ResponseInterface
     {
-        $request = $this->requestFactory->createRequest('DELETE', $uri)
-            ->withAddedHeader('Content-Type', 'application/json');
+        $request = $this->requestFactory->createRequest('GET', $uri);
+
+        foreach ($headers as $name => $value) {
+            $request = $request->withHeader($name, $value);
+        }
+
+        return $this->client->sendRequest($request);
+    }
+
+    /**
+     * @param string $uri
+     * @param array $headers
+     * @return ResponseInterface
+     * @throws ClientExceptionInterface
+     */
+    public function delete(string $uri, array $headers = []): ResponseInterface
+    {
+        $request = $this->requestFactory->createRequest('DELETE', $uri);
+
+        foreach ($headers as $name => $value) {
+            $request = $request->withHeader($name, $value);
+        }
 
         return $this->client->sendRequest($request);
     }
