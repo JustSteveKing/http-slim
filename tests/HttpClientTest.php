@@ -282,6 +282,16 @@ class HttpClientTest extends TestCase
         return true;
     }
 
+    public function testCanGetAnInstanceOfThePassedInClient()
+    {
+        $client = $this->getHttpClient();
+
+        $this->assertInstanceOf(
+            Psr18Client::class,
+            $client->getClient()
+        );
+    }
+
     protected function getHttpClient(): HttpClient
     {
         $psr18Client = $requestFactory = $streamFactory = new Psr18Client();

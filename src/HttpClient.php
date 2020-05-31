@@ -15,6 +15,13 @@ use JustSteveKing\HttpSlim\Exceptions\RequestError;
 class HttpClient implements HttpClientInterface
 {
     /**
+     * @var array
+     */
+    protected array $defaultHeaders = [
+        'Content-Type' => 'application/json'
+    ];
+
+    /**
      * @var ClientInterface
      */
     protected ClientInterface $client;
@@ -39,8 +46,7 @@ class HttpClient implements HttpClientInterface
         ClientInterface $client,
         RequestFactoryInterface $requestFactory,
         StreamFactoryInterface $streamFactory
-    )
-    {
+    ) {
         $this->client = $client;
         $this->requestFactory = $requestFactory;
         $this->streamFactory = $streamFactory;
@@ -65,6 +71,16 @@ class HttpClient implements HttpClientInterface
     }
 
     /**
+     * Get the instance of the injected client
+     *
+     * @return ClientInterface
+     */
+    public function getClient(): ClientInterface
+    {
+        return $this->client;
+    }
+
+    /**
      * @param string $uri
      * @param array $headers
      * @return ResponseInterface
@@ -74,7 +90,7 @@ class HttpClient implements HttpClientInterface
     {
         $request = $this->createRequest('GET', $uri);
 
-        foreach ($headers as $name => $value) {
+        foreach (array_merge($this->defaultHeaders, $headers) as $name => $value) {
             $request = $request->withHeader($name, $value);
         }
 
@@ -101,7 +117,7 @@ class HttpClient implements HttpClientInterface
         $request = $this->createRequest('POST', $uri)
             ->withBody($this->streamFactory->createStream($content));
 
-        foreach (array_merge(['Content-Type' => 'application/json'], $headers) as $name => $value) {
+        foreach (array_merge($this->defaultHeaders, $headers) as $name => $value) {
             $request = $request->withHeader($name, $value);
         }
 
@@ -128,7 +144,7 @@ class HttpClient implements HttpClientInterface
         $request = $this->createRequest('PUT', $uri)
             ->withBody($this->streamFactory->createStream($content));
 
-        foreach (array_merge(['Content-Type' => 'application/json'], $headers) as $name => $value) {
+        foreach (array_merge($this->defaultHeaders, $headers) as $name => $value) {
             $request = $request->withHeader($name, $value);
         }
 
@@ -155,7 +171,7 @@ class HttpClient implements HttpClientInterface
         $request = $this->createRequest('PATCH', $uri)
             ->withBody($this->streamFactory->createStream($content));
 
-        foreach (array_merge(['Content-Type' => 'application/json'], $headers) as $name => $value) {
+        foreach (array_merge($this->defaultHeaders, $headers) as $name => $value) {
             $request = $request->withHeader($name, $value);
         }
 
@@ -172,7 +188,7 @@ class HttpClient implements HttpClientInterface
     {
         $request = $this->createRequest('DELETE', $uri);
 
-        foreach ($headers as $name => $value) {
+        foreach (array_merge($this->defaultHeaders, $headers) as $name => $value) {
             $request = $request->withHeader($name, $value);
         }
 
