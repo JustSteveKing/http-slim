@@ -17,24 +17,24 @@ class HttpClient implements HttpClientInterface
     /**
      * @var array
      */
-    protected array $defaultHeaders = [
+    private array $defaultHeaders = [
         'Content-Type' => 'application/json'
     ];
 
     /**
      * @var ClientInterface
      */
-    protected ClientInterface $client;
+    private ClientInterface $client;
 
     /**
      * @var StreamFactoryInterface
      */
-    protected StreamFactoryInterface $streamFactory;
+    private StreamFactoryInterface $streamFactory;
 
     /**
      * @var RequestFactoryInterface
      */
-    protected RequestFactoryInterface $requestFactory;
+    private RequestFactoryInterface $requestFactory;
 
     /**
      * HttpClient constructor.
@@ -200,7 +200,7 @@ class HttpClient implements HttpClientInterface
      * @return string
      * @throws \JsonException
      */
-    protected function encodeJson(array $json): string
+    private function encodeJson(array $json): string
     {
         return json_encode($json, JSON_THROW_ON_ERROR);
     }
@@ -212,7 +212,7 @@ class HttpClient implements HttpClientInterface
      * @param $uri
      * @return RequestInterface
      */
-    protected function createRequest(string $method, $uri): RequestInterface
+    private function createRequest(string $method, $uri): RequestInterface
     {
         return $this->requestFactory->createRequest(
             $method,
