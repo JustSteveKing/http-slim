@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="Graph Connection Manager coding standard">
+<ruleset name="Http Slim coding standard">
     <description>Http Slim coding standard</description>
 
     <!-- command line arguments -->
