@@ -46,6 +46,10 @@
             "JustSteveKing\\Tests\\HttpSlim\\": "tests/"
         }
     },
+    "provide": {
+        "php-http/client-implementation": "1.0",
+        "psr/http-client-implementation": "1.0"
+    },
     "scripts": {
         "preflight:analyse": [
             "@preflight:analyse:phpstan",
