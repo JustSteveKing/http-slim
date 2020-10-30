@@ -30,8 +30,7 @@
         "squizlabs/php_codesniffer": "^3.5",
         "symfony/http-client": "^5.0",
         "symfony/var-dumper": "^5.0",
-        "thecodingmachine/phpstan-safe-rule": "^1.0",
-        "vimeo/psalm": "^3.11"
+        "thecodingmachine/phpstan-safe-rule": "^1.0"
     },
     "config": {
         "sort-packages": true
@@ -52,11 +51,9 @@
     },
     "scripts": {
         "preflight:analyse": [
-            "@preflight:analyse:phpstan",
-            "@preflight:analyse:psalm"
+            "@preflight:analyse:phpstan"
         ],
         "preflight:analyse:phpstan": "phpstan analyse -c phpstan.neon.dist --no-progress",
-        "preflight:analyze:psalm": "psalm --diff --diff-methods --show-info=true --config=psalm.xml.dist",
         "preflight:lint": [
             "parallel-lint src tests",
             "phpcs --cache=build/cache/phpcs.cache"
@@ -73,7 +70,6 @@
     "scripts-descriptions": {
         "preflight:analyze": "Performs static analysis on the code base.",
         "preflight:analyze:phpstan": "Runs the PHPStan static analyzer.",
-        "preflight:analyze:psalm": "Runs the Psalm static analyzer.",
         "preflight:lint": "Checks all source code for coding standards issues.",
         "preflight:test": "Runs the full unit test suite.",
         "preflight:test:all": "Runs linting, static analysis, and unit tests.",
