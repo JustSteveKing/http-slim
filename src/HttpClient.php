@@ -18,7 +18,8 @@ class HttpClient implements HttpClientInterface
      * @var array
      */
     private array $defaultHeaders = [
-        'Content-Type' => 'application/json'
+        'Content-Type' => 'application/json',
+        'Accept' => 'application/json'
     ];
 
     /**
