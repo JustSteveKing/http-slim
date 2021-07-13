@@ -197,6 +197,23 @@ class HttpClient implements HttpClientInterface
     }
 
     /**
+     * @param string $uri
+     * @param array $headers
+     * @return ResponseInterface
+     * @throws ClientExceptionInterface
+     */
+    public function options(string $uri, array $headers = []): ResponseInterface
+    {
+        $request = $this->createRequest('OPTIONS', $uri);
+
+        foreach (array_merge($this->defaultHeaders, $headers) as $name => $value) {
+            $request = $request->withHeader($name, $value);
+        }
+
+        return $this->client->sendRequest($request);
+    }
+
+    /**
      * @param array $json
      * @return string
      * @throws \JsonException

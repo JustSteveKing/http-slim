@@ -1,14 +1,15 @@
 {
     "name": "juststeveking/http-slim",
-    "description": "A slim psr compliant http client to provide better interoperability",
+    "description": "A slim psr compliant http client to provide better interoperability.",
     "type": "library",
     "authors": [
         {
-          "name": "Steve McDougall",
-          "email": "juststevemcd@gmail.com",
-          "homepage": "https://www.juststeveking.uk"
+            "role": "Developer",
+            "name": "Steve McDougall",
+            "email": "juststevemcd@gmail.com",
+            "homepage": "https://www.juststeveking.uk/"
         }
-      ],
+    ],
     "keywords": [
         "http-client",
         "psr-7",
@@ -17,7 +18,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.4|^8.0",
+        "php": "^8.0",
         "ext-json": "*",
         "psr/http-client": "^1.0",
         "psr/http-factory": "^1.0"
