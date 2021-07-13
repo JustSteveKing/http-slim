@@ -9,6 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Client\ClientExceptionInterface;
+use Throwable;
 
 use function Safe\json_encode;
 
@@ -24,11 +25,9 @@ class HttpClient implements HttpClientInterface
 
     /**
      * HttpClient constructor.
-     *
      * @param ClientInterface $client
      * @param RequestFactoryInterface $requestFactory
      * @param StreamFactoryInterface $streamFactory
-     *
      * @return void
      */
     final protected function __construct(
@@ -40,11 +39,9 @@ class HttpClient implements HttpClientInterface
 
     /**
      * Build a new instance of HttpClient
-     *
      * @param ClientInterface $client
      * @param RequestFactoryInterface $requestFactory
      * @param StreamFactoryInterface $streamFactory
-     *
      * @return HttpClient
      */
     public static function build(
@@ -61,7 +58,6 @@ class HttpClient implements HttpClientInterface
 
     /**
      * Get the instance of the injected client
-     *
      * @return ClientInterface
      */
     public function getClient(): ClientInterface
@@ -71,13 +67,11 @@ class HttpClient implements HttpClientInterface
 
     /**
      * Send a GET request.
-     *
      * @param string $uri
      * @param array $headers
-     *
      * @return ResponseInterface
-     *
      * @throws ClientExceptionInterface
+     * @throws Throwable
      */
     public function get(string $uri, array $headers = []): ResponseInterface
     {
@@ -94,17 +88,25 @@ class HttpClient implements HttpClientInterface
             );
         }
 
-        return $this->client->sendRequest(
-            request: $request,
-        );
+        try {
+            $response = $this->client->sendRequest(
+                request: $request,
+            );
+        } catch (Throwable $exception) {
+            throw $exception;
+        }
+
+        return $response;
     }
 
     /**
+     * Send a POST request.
      * @param string $uri
      * @param array $body
      * @param array $headers
      * @return ResponseInterface
      * @throws ClientExceptionInterface
+     * @throws Throwable
      */
     public function post(string $uri, array $body, array $headers = []): ResponseInterface
     {
@@ -125,17 +127,25 @@ class HttpClient implements HttpClientInterface
             );
         }
 
-        return $this->client->sendRequest(
-            request: $request,
-        );
+        try {
+            $response = $this->client->sendRequest(
+                request: $request,
+            );
+        } catch (Throwable $exception) {
+            throw $exception;
+        }
+
+        return $response;
     }
 
     /**
+     * Send a PUT request.
      * @param string $uri
      * @param array $body
      * @param array $headers
      * @return ResponseInterface
      * @throws ClientExceptionInterface
+     * @throws Throwable
      */
     public function put(string $uri, array $body, array $headers = []): ResponseInterface
     {
@@ -156,17 +166,25 @@ class HttpClient implements HttpClientInterface
             );
         }
 
-        return $this->client->sendRequest(
-            request: $request,
-        );
+        try {
+            $response = $this->client->sendRequest(
+                request: $request,
+            );
+        } catch (Throwable $exception) {
+            throw $exception;
+        }
+
+        return $response;
     }
 
     /**
+     * Send a PATCH request.
      * @param string $uri
      * @param array $body
      * @param array $headers
      * @return ResponseInterface
      * @throws ClientExceptionInterface
+     * @throws Throwable
      */
     public function patch(string $uri, array $body, array $headers = []): ResponseInterface
     {
@@ -187,16 +205,24 @@ class HttpClient implements HttpClientInterface
             );
         }
 
-        return $this->client->sendRequest(
-            request: $request,
-        );
+        try {
+            $response = $this->client->sendRequest(
+                request: $request,
+            );
+        } catch (Throwable $exception) {
+            throw $exception;
+        }
+
+        return $response;
     }
 
     /**
+     * Send a DELETE request.
      * @param string $uri
      * @param array $headers
      * @return ResponseInterface
      * @throws ClientExceptionInterface
+     * @throws Throwable
      */
     public function delete(string $uri, array $headers = []): ResponseInterface
     {
@@ -213,16 +239,24 @@ class HttpClient implements HttpClientInterface
             );
         }
 
-        return $this->client->sendRequest(
-            request: $request,
-        );
+        try {
+            $response = $this->client->sendRequest(
+                request: $request,
+            );
+        } catch (Throwable $exception) {
+            throw $exception;
+        }
+
+        return $response;
     }
 
     /**
+     * Send an OPTIONS request.
      * @param string $uri
      * @param array $headers
      * @return ResponseInterface
      * @throws ClientExceptionInterface
+     * @throws Throwable
      */
     public function options(string $uri, array $headers = []): ResponseInterface
     {
@@ -239,8 +273,14 @@ class HttpClient implements HttpClientInterface
             );
         }
 
-        return $this->client->sendRequest(
-            request: $request,
-        );
+        try {
+            $response = $this->client->sendRequest(
+                request: $request,
+            );
+        } catch (Throwable $exception) {
+            throw $exception;
+        }
+
+        return $response;
     }
 }
