@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace JustSteveKing\HttpSlim;
 
 use Psr\Http\Client\ClientInterface;
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Client\ClientExceptionInterface;
-use JustSteveKing\HttpSlim\Exceptions\RequestError;
+
+use function Safe\json_encode;
 
 class HttpClient implements HttpClientInterface
 {
@@ -23,51 +23,39 @@ class HttpClient implements HttpClientInterface
     ];
 
     /**
-     * @var ClientInterface
-     */
-    private ClientInterface $client;
-
-    /**
-     * @var StreamFactoryInterface
-     */
-    private StreamFactoryInterface $streamFactory;
-
-    /**
-     * @var RequestFactoryInterface
-     */
-    private RequestFactoryInterface $requestFactory;
-
-    /**
      * HttpClient constructor.
+     *
      * @param ClientInterface $client
      * @param RequestFactoryInterface $requestFactory
      * @param StreamFactoryInterface $streamFactory
+     *
+     * @return void
      */
     final protected function __construct(
-        ClientInterface $client,
-        RequestFactoryInterface $requestFactory,
-        StreamFactoryInterface $streamFactory
+        private ClientInterface $client,
+        private RequestFactoryInterface $requestFactory,
+        private StreamFactoryInterface $streamFactory
     ) {
-        $this->client = $client;
-        $this->requestFactory = $requestFactory;
-        $this->streamFactory = $streamFactory;
     }
 
     /**
+     * Build a new instance of HttpClient
+     *
      * @param ClientInterface $client
      * @param RequestFactoryInterface $requestFactory
      * @param StreamFactoryInterface $streamFactory
-     * @return static
+     *
+     * @return HttpClient
      */
     public static function build(
         ClientInterface $client,
         RequestFactoryInterface $requestFactory,
         StreamFactoryInterface $streamFactory
-    ): self {
-        return new self(
-            $client,
-            $requestFactory,
-            $streamFactory
+    ): HttpClient {
+        return new HttpClient(
+            client: $client,
+            requestFactory: $requestFactory,
+            streamFactory: $streamFactory,
         );
     }
 
@@ -82,20 +70,33 @@ class HttpClient implements HttpClientInterface
     }
 
     /**
+     * Send a GET request.
+     *
      * @param string $uri
      * @param array $headers
+     *
      * @return ResponseInterface
+     *
      * @throws ClientExceptionInterface
      */
     public function get(string $uri, array $headers = []): ResponseInterface
     {
-        $request = $this->createRequest('GET', $uri);
+        $request = $this->requestFactory->createRequest(
+            method: Request::GET,
+            uri: $uri
+        );
 
         foreach (array_merge($this->defaultHeaders, $headers) as $name => $value) {
-            $request = $request->withHeader($name, $value);
+            // ommiting named args here as some libraries use a different naming convention.
+            $request = $request->withHeader(
+                $name,
+                $value,
+            );
         }
 
-        return $this->client->sendRequest($request);
+        return $this->client->sendRequest(
+            request: $request,
+        );
     }
 
     /**
@@ -107,22 +108,26 @@ class HttpClient implements HttpClientInterface
      */
     public function post(string $uri, array $body, array $headers = []): ResponseInterface
     {
-        try {
-            $content = $this->encodeJson($body);
-            // @codeCoverageIgnoreStart
-        } catch (\JsonException $exception) {
-            throw RequestError::invalidJson($exception);
-        }
-        // @codeCoverageIgnoreEnd
-
-        $request = $this->createRequest('POST', $uri)
-            ->withBody($this->streamFactory->createStream($content));
+        $request = $this->requestFactory->createRequest(
+            method: Request::POST,
+            uri: $uri
+        )->withBody(
+            body: $this->streamFactory->createStream(
+                content: json_encode($body),
+            ),
+        );
 
         foreach (array_merge($this->defaultHeaders, $headers) as $name => $value) {
-            $request = $request->withHeader($name, $value);
+            // ommiting named args here as some libraries use a different naming convention.
+            $request = $request->withHeader(
+                $name,
+                $value,
+            );
         }
 
-        return $this->client->sendRequest($request);
+        return $this->client->sendRequest(
+            request: $request,
+        );
     }
 
     /**
@@ -134,22 +139,26 @@ class HttpClient implements HttpClientInterface
      */
     public function put(string $uri, array $body, array $headers = []): ResponseInterface
     {
-        try {
-            $content = $this->encodeJson($body);
-            // @codeCoverageIgnoreStart
-        } catch (\JsonException $exception) {
-            throw RequestError::invalidJson($exception);
-        }
-        // @codeCoverageIgnoreEnd
-
-        $request = $this->createRequest('PUT', $uri)
-            ->withBody($this->streamFactory->createStream($content));
+        $request = $this->requestFactory->createRequest(
+            method: Request::PUT,
+            uri: $uri
+        )->withBody(
+            body: $this->streamFactory->createStream(
+                content: json_encode($body),
+            ),
+        );
 
         foreach (array_merge($this->defaultHeaders, $headers) as $name => $value) {
-            $request = $request->withHeader($name, $value);
+            // ommiting named args here as some libraries use a different naming convention.
+            $request = $request->withHeader(
+                $name,
+                $value,
+            );
         }
 
-        return $this->client->sendRequest($request);
+        return $this->client->sendRequest(
+            request: $request,
+        );
     }
 
     /**
@@ -161,22 +170,26 @@ class HttpClient implements HttpClientInterface
      */
     public function patch(string $uri, array $body, array $headers = []): ResponseInterface
     {
-        try {
-            $content = $this->encodeJson($body);
-            // @codeCoverageIgnoreStart
-        } catch (\JsonException $exception) {
-            throw RequestError::invalidJson($exception);
-        }
-        // @codeCoverageIgnoreEnd
-
-        $request = $this->createRequest('PATCH', $uri)
-            ->withBody($this->streamFactory->createStream($content));
+        $request = $this->requestFactory->createRequest(
+            method: Request::PATCH,
+            uri: $uri
+        )->withBody(
+            body: $this->streamFactory->createStream(
+                content: json_encode($body),
+            ),
+        );
 
         foreach (array_merge($this->defaultHeaders, $headers) as $name => $value) {
-            $request = $request->withHeader($name, $value);
+            // ommiting named args here as some libraries use a different naming convention.
+            $request = $request->withHeader(
+                $name,
+                $value,
+            );
         }
 
-        return $this->client->sendRequest($request);
+        return $this->client->sendRequest(
+            request: $request,
+        );
     }
 
     /**
@@ -187,13 +200,22 @@ class HttpClient implements HttpClientInterface
      */
     public function delete(string $uri, array $headers = []): ResponseInterface
     {
-        $request = $this->createRequest('DELETE', $uri);
+        $request = $this->requestFactory->createRequest(
+            method: Request::DELETE,
+            uri: $uri
+        );
 
         foreach (array_merge($this->defaultHeaders, $headers) as $name => $value) {
-            $request = $request->withHeader($name, $value);
+            // ommiting named args here as some libraries use a different naming convention.
+            $request = $request->withHeader(
+                $name,
+                $value,
+            );
         }
 
-        return $this->client->sendRequest($request);
+        return $this->client->sendRequest(
+            request: $request,
+        );
     }
 
     /**
@@ -204,37 +226,21 @@ class HttpClient implements HttpClientInterface
      */
     public function options(string $uri, array $headers = []): ResponseInterface
     {
-        $request = $this->createRequest('OPTIONS', $uri);
+        $request = $this->requestFactory->createRequest(
+            method: Request::OPTIONS,
+            uri: $uri
+        );
 
         foreach (array_merge($this->defaultHeaders, $headers) as $name => $value) {
-            $request = $request->withHeader($name, $value);
+            // ommiting named args here as some libraries use a different naming convention.
+            $request = $request->withHeader(
+                $name,
+                $value,
+            );
         }
 
-        return $this->client->sendRequest($request);
-    }
-
-    /**
-     * @param array $json
-     * @return string
-     * @throws \JsonException
-     */
-    private function encodeJson(array $json): string
-    {
-        return json_encode($json, JSON_THROW_ON_ERROR);
-    }
-
-    /**
-     * Create a new Request to send
-     *
-     * @param string $method
-     * @param $uri
-     * @return RequestInterface
-     */
-    private function createRequest(string $method, $uri): RequestInterface
-    {
-        return $this->requestFactory->createRequest(
-            $method,
-            $uri
+        return $this->client->sendRequest(
+            request: $request,
         );
     }
 }

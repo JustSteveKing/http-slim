@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace JustSteveKing\Tests\HttpSlim;
 
+use Closure;
 use JsonSerializable;
 use JustSteveKing\HttpSlim\HttpClient;
 use Nyholm\Psr7\Response;
@@ -49,7 +50,7 @@ class HttpClientTest extends TestCase
 
         $psr18Client = new Psr18Client();
 
-        $this->client->sendRequest(Argument::that(\Closure::fromCallable([$this, 'isRequestWithBodyExpected'])))
+        $this->client->sendRequest(Argument::that(Closure::fromCallable([$this, 'isRequestWithBodyExpected'])))
             ->shouldBeCalled()
             ->willReturn(new Response());
 
@@ -67,7 +68,7 @@ class HttpClientTest extends TestCase
         $psr18Client = new Psr18Client();
 
         $this->client
-            ->sendRequest(Argument::that(\Closure::fromCallable([$this, 'isRequestWithBodyAndAuthorizationExpected'])))
+            ->sendRequest(Argument::that(Closure::fromCallable([$this, 'isRequestWithBodyAndAuthorizationExpected'])))
             ->shouldBeCalled()
             ->willReturn(new Response());
 
@@ -80,7 +81,7 @@ class HttpClientTest extends TestCase
     {
         $psr18Client = new Psr18Client();
 
-        $this->client->sendRequest(Argument::that(\Closure::fromCallable([$this, 'sendGetRequest'])))
+        $this->client->sendRequest(Argument::that(Closure::fromCallable([$this, 'sendGetRequest'])))
             ->shouldBeCalled()
             ->willReturn(new Response());
 
@@ -94,7 +95,7 @@ class HttpClientTest extends TestCase
         $psr18Client = new Psr18Client();
 
         $this->client
-            ->sendRequest(Argument::that(\Closure::fromCallable([$this, 'sendGetRequestWithAuthorization'])))
+            ->sendRequest(Argument::that(Closure::fromCallable([$this, 'sendGetRequestWithAuthorization'])))
             ->shouldBeCalled()
             ->willReturn(new Response());
 
@@ -107,7 +108,7 @@ class HttpClientTest extends TestCase
     {
         $psr18Client = new Psr18Client();
 
-        $this->client->sendRequest(Argument::that(\Closure::fromCallable([$this, 'sendDeleteRequest'])))
+        $this->client->sendRequest(Argument::that(Closure::fromCallable([$this, 'sendDeleteRequest'])))
             ->shouldBeCalled()
             ->willReturn(new Response());
 
@@ -121,7 +122,7 @@ class HttpClientTest extends TestCase
         $psr18Client = new Psr18Client();
 
         $this->client
-            ->sendRequest(Argument::that(\Closure::fromCallable([$this, 'sendDeleteRequestWithAuthorization'])))
+            ->sendRequest(Argument::that(Closure::fromCallable([$this, 'sendDeleteRequestWithAuthorization'])))
             ->shouldBeCalled()
             ->willReturn(new Response());
 
@@ -138,7 +139,7 @@ class HttpClientTest extends TestCase
 
         $psr18Client = new Psr18Client();
 
-        $this->client->sendRequest(Argument::that(\Closure::fromCallable([$this, 'isRequestWithBodyExpected'])))
+        $this->client->sendRequest(Argument::that(Closure::fromCallable([$this, 'isRequestWithBodyExpected'])))
             ->shouldBeCalled()
             ->willReturn(new Response());
 
@@ -156,7 +157,7 @@ class HttpClientTest extends TestCase
         $psr18Client = new Psr18Client();
 
         $this->client
-            ->sendRequest(Argument::that(\Closure::fromCallable([$this, 'isRequestWithBodyAndAuthorizationExpected'])))
+            ->sendRequest(Argument::that(Closure::fromCallable([$this, 'isRequestWithBodyAndAuthorizationExpected'])))
             ->shouldBeCalled()
             ->willReturn(new Response());
 
@@ -173,9 +174,14 @@ class HttpClientTest extends TestCase
 
         $psr18Client = new Psr18Client();
 
-        $this->client->sendRequest(Argument::that(\Closure::fromCallable([$this, 'isRequestWithBodyExpected'])))
-            ->shouldBeCalled()
-            ->willReturn(new Response());
+        $this->client->sendRequest(
+            Argument::that(
+                Closure::fromCallable([
+                    $this,
+                    'isRequestWithBodyExpected'
+                ])
+            )
+        )->shouldBeCalled()->willReturn(new Response());
 
         $httpClient = HttpClient::build($this->client->reveal(), $psr18Client, $psr18Client);
 
@@ -190,7 +196,9 @@ class HttpClientTest extends TestCase
 
         $psr18Client = new Psr18Client();
 
-        $this->client->sendRequest(Argument::that(\Closure::fromCallable([$this, 'isRequestWithBodyAndAuthorizationExpected'])))
+        $this->client->sendRequest(Argument::that(
+            Closure::fromCallable([$this, 'isRequestWithBodyAndAuthorizationExpected'])
+        ))
             ->shouldBeCalled()
             ->willReturn(new Response());
 
@@ -203,7 +211,7 @@ class HttpClientTest extends TestCase
     {
         $psr18Client = new Psr18Client();
 
-        $this->client->sendRequest(Argument::that(\Closure::fromCallable([$this, 'sendOptionsRequest'])))
+        $this->client->sendRequest(Argument::that(Closure::fromCallable([$this, 'sendOptionsRequest'])))
             ->shouldBeCalled()
             ->willReturn(new Response());
 
@@ -220,9 +228,14 @@ class HttpClientTest extends TestCase
 
         $psr18Client = new Psr18Client();
 
-        $this->client->sendRequest(Argument::that(\Closure::fromCallable([$this, 'sendOptionsRequestWithAuthorization'])))
-            ->shouldBeCalled()
-            ->willReturn(new Response());
+        $this->client->sendRequest(
+            Argument::that(
+                Closure::fromCallable([
+                    $this,
+                    'sendOptionsRequestWithAuthorization'
+                ])
+            )
+        )->shouldBeCalled()->willReturn(new Response());
 
         $httpClient = HttpClient::build($this->client->reveal(), $psr18Client, $psr18Client);
 
