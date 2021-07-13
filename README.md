@@ -94,6 +94,12 @@ $httpClient->patch(
 $httpClient->delete(
     'https://api.example.com/v1/resource/identifier'
 );
+
+// perform an options request
+$httpClient->options(
+    'https://api.example.com/v1/resource/identifier',
+    ['X-OPTIONAL' => 'headers']
+);
 ```
 
 ## Tests

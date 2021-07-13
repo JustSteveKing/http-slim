@@ -45,4 +45,11 @@ interface HttpClientInterface
      * @return ResponseInterface
      */
     public function delete(string $uri, array $headers = []): ResponseInterface;
+
+    /**
+     * @param string $uri
+     * @param array $headers
+     * @return ResponseInterface
+     */
+    public function options(string $uri, array $headers = []): ResponseInterface;
 }
