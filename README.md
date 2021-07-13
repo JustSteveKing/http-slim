@@ -21,11 +21,11 @@
 
 The purpose of this package is to create an interoperable http client implementation allowing a "bring you own packages" approach to connection to 3rd party services.
 
-THe main goal of this package is to adhere to the following PSRs:
+The main goal of this package is to adhere to the following PSRs:
 
-- PSR-18
-- PSR-17
-- PSR-7
+- [PSR-18 - HTTP Client](https://www.php-fig.org/psr/psr-18/)
+- [PSR-17 - HTTP Factories](https://www.php-fig.org/psr/psr-17/)
+- [PSR-7 - HTTP Message Interface](https://www.php-fig.org/psr/psr-7/)
 
 
 ## Installation
