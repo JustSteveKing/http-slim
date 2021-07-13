@@ -66,8 +66,8 @@
             "@preflight:analyse",
             "@preflight:test"
         ],
-        "preflight:test:coverage:ci": "phpunit --coverage-clover build/logs/clover.xml",
-        "preflight:test:coverage:html": "phpunit --coverage-html build/coverage"
+        "preflight:test:coverage:ci": "./vendor/bin/phpunit --coverage-clover build/logs/clover.xml",
+        "preflight:test:coverage:html": "./vendor/bin/phpunit --coverage-html build/coverage"
     },
     "scripts-descriptions": {
         "preflight:analyze": "Performs static analysis on the code base.",
