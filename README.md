@@ -51,8 +51,7 @@ A few packages that are recommended:
 
 ## Usage
 
-Once you have a client to inject, you can set up an easy to use and consistent implementation. The following example is using the Symfony HttpClient as it has the best documentation I have seen so far.
-
+Once you have installed a **PSR-18** package and a **PSR-17** package we do not _need_ to do anything else. This package support HTTP Autodiscovery for your PSR compliant Client and Request factories. However, should you choose to inject you can do!
 
 ```php
 <?php
@@ -62,43 +61,56 @@ declare(strict_types=1);
 use JustSteveKing\HttpSlim\HttpClient;
 use Symfony\Component\HttpClient\Psr18Client;
 
+// Injecting Clients: 
 $httpClient = HttpClient::build(
-    new Psr18Client(), // our client
-    new Psr18Client(), // our request factory
-    new Psr18Client() // our stream factory
+    clientInterface: new Psr18Client(),
+    requestFactory: new Psr18Client(),
+    streamFactory: new Psr18Client(),
 );
 
-// perform a get request
-$httpClient->get('https://api.example.com/v1/resource');
+// Using HTTP Auto-discovery
+$httpClient = HttpClient::build();
 
+
+// perform a get request
+$httpClient->get(
+    uri: 'https://api.example.com/v1/resource',
+);
 
 // perform a post request
 $httpClient->post(
-    'https://api.example.com/v1/resource',
-    ['foo' => 'bar']
+    uri: 'https://api.example.com/v1/resource',
+    body: ['foo' => 'bar'],
 );
 
 // perform a put request
 $httpClient->put(
-    'https://api.example.com/v1/resource/identifier',
-    ['foo' => 'bar']
+    uri: 'https://api.example.com/v1/resource/identifier',
+    body: ['foo' => 'bar'],
 );
 
 // perform a patch request
 $httpClient->patch(
-    'https://api.example.com/v1/resource/identifier',
-    ['foo' => 'bar']
+    uri: 'https://api.example.com/v1/resource/identifier',
+    body: ['foo' => 'bar'],
 );
 
 // perform a delete request
 $httpClient->delete(
-    'https://api.example.com/v1/resource/identifier'
+    uri: 'https://api.example.com/v1/resource/identifier',
 );
 
 // perform an options request
 $httpClient->options(
-    'https://api.example.com/v1/resource/identifier',
-    ['X-OPTIONAL' => 'headers']
+    uri: 'https://api.example.com/v1/resource/identifier',
+    headers: ['X-OPTIONAL' => 'headers'],
+);
+
+// Adding Plugins
+$httpClient->addPlugin(
+    plugin: new \Http\Client\Common\Plugin\HeaderDefaultsPlugin(
+        headers: ['Content-Type' => 'application/json'],
+    ),
 );
 ```
 

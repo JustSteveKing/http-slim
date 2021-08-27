@@ -29,8 +29,9 @@ trait TestsHttpClient
         }
 
         $this->client
-            ->sendRequest(Argument::that(fn($request) => is_callable($expectation) ? $expectation(expect($request)) : $expectation))
-            ->shouldBeCalled()
+            ->sendRequest(Argument::that(
+                fn($request) => is_callable($expectation) ? $expectation(expect($request)) : $expectation
+            ))->shouldBeCalled()
             ->willReturn(new Response());
     }
 

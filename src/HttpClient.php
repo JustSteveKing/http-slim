@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace JustSteveKing\HttpSlim;
 
+use Http\Client\Common\HttpMethodsClient;
+use Http\Client\Common\Plugin;
+use Http\Client\Common\PluginClientFactory;
+use Http\Discovery\HttpClientDiscovery;
+use Http\Discovery\Psr17FactoryDiscovery;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamFactoryInterface;
@@ -24,52 +29,73 @@ class HttpClient implements HttpClientInterface
     ];
 
     /**
+     * @var array
+     */
+    private array $plugins = [];
+
+    /**
      * HttpClient constructor.
+     *
      * @param ClientInterface $client
      * @param RequestFactoryInterface $requestFactory
      * @param StreamFactoryInterface $streamFactory
+     *
      * @return void
      */
     final protected function __construct(
         private ClientInterface $client,
         private RequestFactoryInterface $requestFactory,
         private StreamFactoryInterface $streamFactory
-    ) {
-    }
+    ) {}
 
     /**
      * Build a new instance of HttpClient
-     * @param ClientInterface $client
-     * @param RequestFactoryInterface $requestFactory
-     * @param StreamFactoryInterface $streamFactory
+     *
+     * @param null|ClientInterface $client
+     * @param null|RequestFactoryInterface $requestFactory
+     * @param null|StreamFactoryInterface $streamFactory
+     *
      * @return HttpClient
      */
     public static function build(
-        ClientInterface $client,
-        RequestFactoryInterface $requestFactory,
-        StreamFactoryInterface $streamFactory
+        null|ClientInterface $client = null,
+        null|RequestFactoryInterface $requestFactory = null,
+        null|StreamFactoryInterface $streamFactory = null,
     ): HttpClient {
         return new HttpClient(
-            client: $client,
-            requestFactory: $requestFactory,
-            streamFactory: $streamFactory,
+            client: $client ?? HttpClientDiscovery::find(),
+            requestFactory: $requestFactory ?? Psr17FactoryDiscovery::findRequestFactory(),
+            streamFactory: $streamFactory ?? Psr17FactoryDiscovery::findStreamFactory(),
         );
     }
 
     /**
      * Get the instance of the injected client
+     *
      * @return ClientInterface
      */
     public function getClient(): ClientInterface
     {
-        return $this->client;
+        $pluginClient = (new PluginClientFactory())->createClient(
+            client: $this->client,
+            plugins: $this->plugins(),
+        );
+
+        return new HttpMethodsClient(
+            httpClient: $pluginClient,
+            requestFactory: $this->requestFactory,
+            streamFactory: $this->streamFactory,
+        );
     }
 
     /**
      * Send a GET request.
+     *
      * @param string $uri
      * @param array $headers
+     *
      * @return ResponseInterface
+     *
      * @throws ClientExceptionInterface
      * @throws Throwable
      */
@@ -89,7 +115,7 @@ class HttpClient implements HttpClientInterface
         }
 
         try {
-            $response = $this->client->sendRequest(
+            $response = $this->getClient()->sendRequest(
                 request: $request,
             );
         } catch (Throwable $exception) {
@@ -101,9 +127,11 @@ class HttpClient implements HttpClientInterface
 
     /**
      * Send a POST request.
+     *
      * @param string $uri
      * @param array $body
      * @param array $headers
+     *
      * @return ResponseInterface
      * @throws ClientExceptionInterface
      * @throws Throwable
@@ -128,7 +156,7 @@ class HttpClient implements HttpClientInterface
         }
 
         try {
-            $response = $this->client->sendRequest(
+            $response = $this->getClient()->sendRequest(
                 request: $request,
             );
         } catch (Throwable $exception) {
@@ -167,7 +195,7 @@ class HttpClient implements HttpClientInterface
         }
 
         try {
-            $response = $this->client->sendRequest(
+            $response = $this->getClient()->sendRequest(
                 request: $request,
             );
         } catch (Throwable $exception) {
@@ -206,7 +234,7 @@ class HttpClient implements HttpClientInterface
         }
 
         try {
-            $response = $this->client->sendRequest(
+            $response = $this->getClient()->sendRequest(
                 request: $request,
             );
         } catch (Throwable $exception) {
@@ -240,7 +268,7 @@ class HttpClient implements HttpClientInterface
         }
 
         try {
-            $response = $this->client->sendRequest(
+            $response = $this->getClient()->sendRequest(
                 request: $request,
             );
         } catch (Throwable $exception) {
@@ -274,7 +302,7 @@ class HttpClient implements HttpClientInterface
         }
 
         try {
-            $response = $this->client->sendRequest(
+            $response = $this->getClient()->sendRequest(
                 request: $request,
             );
         } catch (Throwable $exception) {
@@ -282,5 +310,15 @@ class HttpClient implements HttpClientInterface
         }
 
         return $response;
+    }
+
+    public function addPlugin(Plugin $plugin): void
+    {
+        $this->plugins[] = $plugin;
+    }
+
+    public function plugins(): array
+    {
+        return $this->plugins;
     }
 }

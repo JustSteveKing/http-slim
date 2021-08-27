@@ -1,6 +1,6 @@
 <?php
 
-use Symfony\Component\HttpClient\Psr18Client;
+use Psr\Http\Client\ClientInterface;
 
 it('can send a POST request')
     ->body(['foo' => 'bar'])
@@ -57,6 +57,20 @@ it('can send an OPTIONS request with authorization')
     ->options(['Authorization' => 'Basic dGVzdDp0ZXN0']);
 
 it('can get an instance of the passed in client')
-    ->expect(fn() => $this->http()->getClient())->toBeInstanceOf(Psr18Client::class);
+    ->expect(fn() => $this->http()->getClient())->toBeInstanceOf(ClientInterface::class);
 
+it('can manage plugins', function () {
+    $client = $this->http();
+    expect($client->plugins())
+        ->toBeEmpty();
 
+    $client->addPlugin(
+        plugin: new \Http\Client\Common\Plugin\HeaderDefaultsPlugin(
+            headers: ['Accept' => 'application/json'],
+        ),
+    );
+
+    expect($client->plugins())
+        ->toBeArray()
+        ->toHaveCount(1);
+});
