@@ -29,12 +29,8 @@
     },
     "require-dev": {
         "nyholm/psr7": "^1.3",
-<<<<<<< HEAD
         "pestphp/pest": "^1.17",
         "pestphp/pest-plugin-parallel": "^0.3.0",
-=======
-        "pestphp/pest": "^1.10",
->>>>>>> master
         "php-parallel-lint/php-parallel-lint": "^1.2",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^9.1",
