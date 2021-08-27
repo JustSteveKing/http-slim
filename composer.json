@@ -20,6 +20,8 @@
     "require": {
         "php": "^8.0",
         "ext-json": "*",
+        "php-http/client-common": "^2.4",
+        "php-http/discovery": "^1.14",
         "psr/http-client": "^1.0",
         "psr/http-factory": "^1.0",
         "thecodingmachine/safe": "^1.3"
