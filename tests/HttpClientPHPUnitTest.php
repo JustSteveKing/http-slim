@@ -6,8 +6,6 @@ namespace JustSteveKing\Tests\HttpSlim;
 
 use Closure;
 use Http\Client\Common\Plugin;
-use Http\Client\Common\Plugin\HeaderDefaultsPlugin;
-use JsonSerializable;
 use JustSteveKing\HttpSlim\HttpClient;
 use Nyholm\Psr7\Response;
 use PHPUnit\Framework\TestCase;
@@ -18,7 +16,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Http\Message\RequestInterface;
 use Symfony\Component\HttpClient\Psr18Client;
 
-class HttpClientTest extends TestCase
+class HttpClientPHPUnitTest extends TestCase
 {
     use ProphecyTrait;
 

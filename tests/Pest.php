@@ -12,6 +12,13 @@
 */
 
 // uses(Tests\TestCase::class)->in('Feature');
+use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Http\Message\RequestInterface;
+
+use function PHPUnit\Framework\assertSame;
+use function PHPUnit\Framework\assertTrue;
+
+uses(ProphecyTrait::class)->in(__DIR__);
 
 /*
 |--------------------------------------------------------------------------
@@ -39,7 +46,23 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function isRequestWithBodyExpected(RequestInterface $request): bool
 {
-    // ..
+    assertTrue(
+        condition: $request->hasHeader('Content-Type'),
+        message: 'Content-Type header not set',
+    );
+    assertSame(
+        expected: 'application/json',
+        actual: $request->getHeaderLine('Content-Type'),
+        message: 'Unexpected Content-Type header value',
+    );
+
+    assertSame(
+        expected: '{"foo":"bar"}',
+        actual: $request->getBody()->getContents(),
+        message: 'Unexpected body content',
+    );
+
+    return true;
 }
