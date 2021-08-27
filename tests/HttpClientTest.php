@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace JustSteveKing\Tests\HttpSlim;
 
 use Closure;
+use Http\Client\Common\Plugin;
+use Http\Client\Common\Plugin\HeaderDefaultsPlugin;
 use JsonSerializable;
 use JustSteveKing\HttpSlim\HttpClient;
 use Nyholm\Psr7\Response;
@@ -42,7 +44,7 @@ class HttpClientTest extends TestCase
         $this->body = [];
     }
 
-    public function testThatWeCanSendAPostRequest()
+    public function testThatWeCanSendAPostRequest(): void
     {
         $this->body = [
             'foo' => 'bar'
@@ -59,7 +61,7 @@ class HttpClientTest extends TestCase
         $httpClient->post($this->url, $this->body);
     }
 
-    public function testThatWeCanSendAPostRequestWithAuthorization()
+    public function testThatWeCanSendAPostRequestWithAuthorization(): void
     {
         $this->body = [
             'foo' => 'bar'
@@ -77,7 +79,7 @@ class HttpClientTest extends TestCase
         $httpClient->post($this->url, $this->body, ['Authorization' => 'Basic dGVzdDp0ZXN0']);
     }
 
-    public function testThatWeCanSendAGetRequest()
+    public function testThatWeCanSendAGetRequest(): void
     {
         $psr18Client = new Psr18Client();
 
@@ -90,7 +92,7 @@ class HttpClientTest extends TestCase
         $httpClient->get($this->url);
     }
 
-    public function testThatWeCanSendAGetRequestWithAuthorization()
+    public function testThatWeCanSendAGetRequestWithAuthorization(): void
     {
         $psr18Client = new Psr18Client();
 
@@ -104,7 +106,7 @@ class HttpClientTest extends TestCase
         $httpClient->get($this->url, ['Authorization' => 'Basic dGVzdDp0ZXN0']);
     }
 
-    public function testThatWeCanSendADeleteRequest()
+    public function testThatWeCanSendADeleteRequest(): void
     {
         $psr18Client = new Psr18Client();
 
@@ -117,7 +119,7 @@ class HttpClientTest extends TestCase
         $httpClient->delete($this->url);
     }
 
-    public function testThatWeCanSendADeleteRequestWithAuthorization()
+    public function testThatWeCanSendADeleteRequestWithAuthorization(): void
     {
         $psr18Client = new Psr18Client();
 
@@ -131,7 +133,7 @@ class HttpClientTest extends TestCase
         $httpClient->delete($this->url, ['Authorization' => 'Basic dGVzdDp0ZXN0']);
     }
 
-    public function testThatWeCanSendAPutRequest()
+    public function testThatWeCanSendAPutRequest(): void
     {
         $this->body = [
             'foo' => 'bar'
@@ -148,7 +150,7 @@ class HttpClientTest extends TestCase
         $httpClient->put($this->url, $this->body);
     }
 
-    public function testThatWeCanSendAPutRequestWithAuthorization()
+    public function testThatWeCanSendAPutRequestWithAuthorization(): void
     {
         $this->body = [
             'foo' => 'bar'
@@ -166,7 +168,7 @@ class HttpClientTest extends TestCase
         $httpClient->put($this->url, $this->body, ['Authorization' => 'Basic dGVzdDp0ZXN0']);
     }
 
-    public function testThatWeCanSendAPatchRequest()
+    public function testThatWeCanSendAPatchRequest(): void
     {
         $this->body = [
             'foo' => 'bar'
@@ -188,7 +190,7 @@ class HttpClientTest extends TestCase
         $httpClient->patch($this->url, $this->body);
     }
 
-    public function testThatWeCanSendAPatchRequestWithAuthorization()
+    public function testThatWeCanSendAPatchRequestWithAuthorization(): void
     {
         $this->body = [
             'foo' => 'bar'
@@ -207,7 +209,7 @@ class HttpClientTest extends TestCase
         $httpClient->patch($this->url, $this->body, ['Authorization' => 'Basic dGVzdDp0ZXN0']);
     }
 
-    public function testThatWeCanSendAnOptionsRequest()
+    public function testThatWeCanSendAnOptionsRequest(): void
     {
         $psr18Client = new Psr18Client();
 
@@ -220,7 +222,7 @@ class HttpClientTest extends TestCase
         $httpClient->options($this->url);
     }
 
-    public function testThatWeCanSendAmOptionsRequestWithAuthorization()
+    public function testThatWeCanSendAmOptionsRequestWithAuthorization(): void
     {
         $this->body = [
             'foo' => 'bar'
@@ -342,13 +344,37 @@ class HttpClientTest extends TestCase
         return true;
     }
 
-    public function testCanGetAnInstanceOfThePassedInClient()
+    public function testCanGetAnInstanceOfThePassedInClient(): void
     {
         $client = $this->getHttpClient();
 
         $this->assertInstanceOf(
             ClientInterface::class,
             $client->getClient()
+        );
+    }
+
+    public function testCanAddPlugins(): void
+    {
+        $client = $this->getHttpClient();
+
+        $this->assertEmpty(
+            actual: $client->plugins(),
+        );
+
+        $client->addPlugin(
+            plugin: $this->createMock(
+                originalClassName: Plugin::class,
+            ),
+        );
+
+        $this->assertNotEmpty(
+            actual: $client->plugins(),
+        );
+
+        $this->assertNotSame(
+            expected: $client,
+            actual: $this->getHttpClient()->getClient(),
         );
     }
 

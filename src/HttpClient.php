@@ -316,4 +316,9 @@ class HttpClient implements HttpClientInterface
     {
         $this->plugins[] = $plugin;
     }
+
+    public function plugins(): array
+    {
+        return $this->plugins;
+    }
 }
