@@ -78,7 +78,7 @@ class HttpClient implements HttpClientInterface
     {
         $pluginClient = (new PluginClientFactory())->createClient(
             client: $this->client,
-            plugins: $this->plugins,
+            plugins: $this->plugins(),
         );
 
         return new HttpMethodsClient(
