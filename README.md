@@ -1,5 +1,10 @@
 # Http Slim
 
+> [!WARNING]
+> **This package is no longer maintained.** It's replaced by [juststeveking/sdk-toolbox](https://github.com/JustSteveKing/sdk-toolbox), whose connector sends requests through any PSR-18 client, discovered or passed in, with retries, redaction and logging around it.
+>
+> Existing versions stay installable, so nothing that depends on this package breaks.
+
 <!-- BADGES_START -->
 [![Latest Version][badge-release]][packagist]
 [![Software License][badge-license]][license]
